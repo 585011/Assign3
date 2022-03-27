@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dat154Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="course">
+    <Key>
+      <PropertyRef Name="coursecode" />
+    </Key>
+    <Property Name="coursecode" Type="char" MaxLength="6" Nullable="false" />
+    <Property Name="coursename" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="semester" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="teacher" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="grade">
+    <Key>
+      <PropertyRef Name="studentid" />
+      <PropertyRef Name="coursecode" />
+    </Key>
+    <Property Name="studentid" Type="int" Nullable="false" />
+    <Property Name="coursecode" Type="char" MaxLength="6" Nullable="false" />
+    <Property Name="grade" Type="char" MaxLength="1" Nullable="false" />
+  </EntityType>
+  <EntityType Name="student">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="studentname" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="studentage" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="fk_course">
+    <End Role="course" Type="Self.course" Multiplicity="1" />
+    <End Role="grade" Type="Self.grade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="course">
+        <PropertyRef Name="coursecode" />
+      </Principal>
+      <Dependent Role="grade">
+        <PropertyRef Name="coursecode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_student">
+    <End Role="student" Type="Self.student" Multiplicity="1" />
+    <End Role="grade" Type="Self.grade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="student">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="grade">
+        <PropertyRef Name="studentid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dat154ModelStoreContainer">
+    <EntitySet Name="course" EntityType="Self.course" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="grade" EntityType="Self.grade" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="student" EntityType="Self.student" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="fk_course" Association="Self.fk_course">
+      <End Role="course" EntitySet="course" />
+      <End Role="grade" EntitySet="grade" />
+    </AssociationSet>
+    <AssociationSet Name="fk_student" Association="Self.fk_student">
+      <End Role="student" EntitySet="student" />
+      <End Role="grade" EntitySet="grade" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

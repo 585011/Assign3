@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dat154Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="course">
+    <Key>
+      <PropertyRef Name="coursecode" />
+    </Key>
+    <Property Name="coursecode" Type="String" MaxLength="6" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="coursename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="semester" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="teacher" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="grade" Relationship="Self.fk_course" FromRole="course" ToRole="grade" />
+  </EntityType>
+  <EntityType Name="grade">
+    <Key>
+      <PropertyRef Name="studentid" />
+      <PropertyRef Name="coursecode" />
+    </Key>
+    <Property Name="studentid" Type="Int32" Nullable="false" />
+    <Property Name="coursecode" Type="String" MaxLength="6" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="grade1" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="course" Relationship="Self.fk_course" FromRole="grade" ToRole="course" />
+    <NavigationProperty Name="student" Relationship="Self.fk_student" FromRole="grade" ToRole="student" />
+  </EntityType>
+  <EntityType Name="student">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="studentname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="studentage" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="grade" Relationship="Self.fk_student" FromRole="student" ToRole="grade" />
+  </EntityType>
+  <Association Name="fk_course">
+    <End Role="course" Type="Self.course" Multiplicity="1" />
+    <End Role="grade" Type="Self.grade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="course">
+        <PropertyRef Name="coursecode" />
+      </Principal>
+      <Dependent Role="grade">
+        <PropertyRef Name="coursecode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_student">
+    <End Role="student" Type="Self.student" Multiplicity="1" />
+    <End Role="grade" Type="Self.grade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="student">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="grade">
+        <PropertyRef Name="studentid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dat154Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="course" EntityType="Self.course" />
+    <EntitySet Name="grade" EntityType="Self.grade" />
+    <EntitySet Name="student" EntityType="Self.student" />
+    <AssociationSet Name="fk_course" Association="Self.fk_course">
+      <End Role="course" EntitySet="course" />
+      <End Role="grade" EntitySet="grade" />
+    </AssociationSet>
+    <AssociationSet Name="fk_student" Association="Self.fk_student">
+      <End Role="student" EntitySet="student" />
+      <End Role="grade" EntitySet="grade" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
