@@ -11,9 +11,22 @@
             <asp:ListItem Text="Select grade" Value="0" />
         </asp:DropDownList>
         <asp:Button ID="Button1" runat="server" Text="FailedStudents" OnClick="Button1_Click" />
+        <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="Add Student" />
+        <div> StudentID:<asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+            CourseCode:<asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
+            Grade:<asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
+        </div>
+       
     </div>
 
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false">
+
+        <asp:GridView ID="GridView3" runat="server" AutoGenerateColumns="false">
+            <Columns>
+                <asp:BoundField DataField="studentname" HeaderText="Name" />
+            </Columns>
+        </asp:GridView>
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false" 
+            OnRowCommand="GridView1_RowCommand" OnRowDeleting="GridView1_RowDeleting" >
             <Columns>
                 <asp:BoundField DataField="studentname" HeaderText="Name" />
                 <asp:BoundField DataField="grade1" HeaderText="Grade" />
@@ -28,9 +41,6 @@
             </Columns>
         </asp:GridView>
    <hr />
-    
-    
-    </div>
     
     
 </asp:Content>
